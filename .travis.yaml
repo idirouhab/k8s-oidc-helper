@@ -1,0 +1,18 @@
+sudo: true
+dist: trusty
+
+env:
+  - PROJECT_NAME=postgres
+
+
+jobs:
+  include:
+    - stage: build docker image
+      script:
+      - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+      - docker build -t travis-ci-build-stages-demo .
+      - docker images
+      - docker tag travis-ci-build-stages-demo $DOCKER_USERNAME/travis-ci-build-stages-demo
+      - docker push $DOCKER_USERNAME/travis-ci-build-stages-demo
+    - stage: push
+      script: docker run --rm $DOCKER_USERNAME/PROJECT_NAME:$TRAVIS_BRANCH

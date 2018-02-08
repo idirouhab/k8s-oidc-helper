@@ -1,10 +1,10 @@
-sudo: true
-dist: trusty
-
-jobs:
-  include:
-    - stage: build docker image
-      script:
-      - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-      - docker build -t $REPOSITORY/$PROJECT_NAME:$TRAVIS_BRANCH .
-      - docker push $REPOSITORY/$PROJECT_NAME:$TRAVIS_BRANCH
+language: go
+notifications:
+  email: false
+install: true
+script: true
+deploy:
+  provider: script
+  script: ./build.sh
+  on:
+    tags: true
